@@ -2,8 +2,11 @@ package com.footpath.online.model;
 
 import java.util.List;
 
+import com.footpath.online.constrains.EmailConstrain;
+
 public class Customer {
 private String name;
+@EmailConstrain
 private String email;
 private String password;
 private List<Address> addresses;
@@ -13,6 +16,7 @@ public String getName() {
 public void setName(String name) {
 	this.name = name;
 }
+
 public String getEmail() {
 	return email;
 }

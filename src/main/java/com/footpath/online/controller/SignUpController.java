@@ -1,5 +1,7 @@
 package com.footpath.online.controller;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,24 +11,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.footpath.online.RequiredAnnotation;
 import com.footpath.online.model.Customer;
 import com.footpath.online.service.SignUpService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/footpath")
 public class SignUpController {
 	@Autowired
 	private SignUpService signUpService;
-	
+	@Autowired
+	private RequiredAnnotation requiredA;
 	
 	
 @PostMapping(value="/signup")
-public ResponseEntity<?> signUp(@RequestBody Customer customer) {
+public ResponseEntity<?> signUp(@Valid @RequestBody Customer customer) {
 	if(signUpService.insertNewUser(customer)) {
-	return new ResponseEntity<>("User registered Successfully!", HttpStatus.CREATED);
+	return new ResponseEntity<>(requiredA.messageSource.getMessage("USER_CREATED", null, null, null), HttpStatus.CREATED);
 	}
 	else {
-		return new ResponseEntity<>("User already registered with this email!", HttpStatus.NOT_ACCEPTABLE);
+		return new ResponseEntity<>(requiredA.messageSource.getMessage("USER_EXIST", null, null, null), HttpStatus.NOT_ACCEPTABLE);
 	}
+	
 }
 }
